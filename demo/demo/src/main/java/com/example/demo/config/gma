@@ -1,0 +1,121 @@
+WebAsyncManagerIntegrationFilter 비동기 요청(SecurityContext) 처리
+SecurityContextPersistenceFilter 기존 보안 컨텍스트(SecurityContext) 유지
+HeaderWriterFilter 보안 헤더 설정 (CSP, XSS 방지 등)
+CsrfFilter CSRF 공격 방지
+LogoutFilter 로그아웃 처리
+UsernamePasswordAuthenticationFilter 기본 로그인 처리 (폼 기반)
+DefaultLoginPageGeneratingFilter 기본 로그인 페이지 생성 (필요할 때만)
+DefaultLogoutPageGeneratingFilter 기본 로그아웃 페이지 생성
+BearerTokenAuthenticationFilter JWT 등 Bearer Token 인증
+RequestCacheAwareFilter 요청 캐시 처리 (인증 후 원래 페이지 이동)
+SecurityContextHolderAwareRequestFilter HttpServletRequest 보안 기능 확장
+AnonymousAuthenticationFilter 익명 사용자 처리
+SessionManagementFilter 세션 보안 관리 (동시 로그인 제한 등)
+ExceptionTranslationFilter 인증/인가 예외 처리
+FilterSecurityInterceptor 최종 권한 검사
+
+AuthenticationFilter 기본적인 인증 처리 (Spring Security 5.2+ 추가됨)
+OAuth2LoginAuthenticationFilter OAuth2 로그인 처리
+OAuth2AuthorizationCodeGrantFilter OAuth2 인증 코드 처리
+BearerTokenAuthenticationFilter JWT 토큰 기반 인증 처리
+BasicAuthenticationFilter HTTP Basic 인증 처리
+DigestAuthenticationFilter HTTP Digest 인증 처리 (거의 사용 안 함)
+
+OAuth2LoginAuthenticationFilter OAuth2 로그인 처리 (Google, Facebook 등)
+OAuth2AuthorizationRequestRedirectFilter OAuth2 인증 요청 리디렉트
+OAuth2AuthorizationResponseFilter OAuth2 인증 응답 처리
+OidcAuthorizationCodeAuthenticationFilter OpenID Connect (OIDC) 코드 인증
+
+CorsFilter CORS 설정 적용
+CsrfFilter CSRF 보호 필터
+HeaderWriterFilter 보안 헤더 추가 (CSP, HSTS 등)
+RememberMeAuthenticationFilter "Remember Me" 기능 처리
+X509AuthenticationFilter X.509 인증서 기반 인증
+
+http.authorizeHttpRequests() URL별 접근 권한 설정
+http.formLogin() 폼 로그인 설정
+http.httpBasic() HTTP Basic 인증 활성화
+http.oauth2Login() OAuth2 로그인 설정
+http.ldapAuthentication() LDAP 인증 설정
+http.saml2Login() SAML 2.0 로그인 설정
+http.x509() X.509 인증서 기반 인증 설정
+http.sessionManagement() 세션 관리 설정 (동시 로그인 제한 등)
+http.anonymous() 익명 사용자 허용 설정
+http.rememberMe() "Remember Me" 기능 활성화
+
+http.csrf()	CSRF 보호 활성화/비활성화
+http.cors()	CORS 설정
+http.headers()	보안 헤더 설정 (CSP, HSTS 등)
+http.requiresChannel()	HTTP → HTTPS 강제 전환
+
+http.logout()	로그아웃 설정
+http.exceptionHandling()	인증/인가 예외 처리
+http.requestCache()	요청 캐시 처리 (인증 후 원래 페이지 이동)
+
+http.addFilter()	커스텀 필터 추가
+http.addFilterBefore()	특정 필터 전에 커스텀 필터 추가
+http.addFilterAfter()	특정 필터 후에 커스텀 필터 추가
+http.securityMatcher()	특정 요청에만 보안 설정 적용
+
+http.oauth2Login()	OAuth2 로그인 활성화
+http.oauth2ResourceServer()	OAuth2 리소스 서버(JWT, Opaque Token) 설정
+http.oauth2Client()	OAuth2 클라이언트 설정
+
+
+authorizeHttpRequests()
+📌 권한 설정 종류
+
+메서드	설명
+.permitAll()	누구나 접근 가능
+.denyAll()	모두 접근 차단
+.authenticated()	인증된 사용자만 접근 가능
+.hasRole("ROLE_NAME")	특정 역할(권한)을 가진 사용자만 접근 가능
+.hasAuthority("AUTHORITY_NAME")	특정 권한이 있는 사용자만 접근 가능
+.hasAnyRole("ROLE1", "ROLE2")	여러 역할 중 하나라도 있으면 접근 가능
+.hasAnyAuthority("AUTH1", "AUTH2")	여러 권한 중 하나라도 있으면 접근 가능
+.access("스프링EL 표현식")	SpEL(Expression Language)로 접근 제어
+.requestMatchers("<패턴>").permitAll()	특정 요청 경로에 대한 규칙 적용
+
+
+formLogin() 메소드
+기본 로그인 폼을 활성화하고, Spring Security가 제공하는 기본 로그인 페이지를 사용함
+
+loginPage("/login")	커스텀 로그인 페이지 지정
+loginProcessingUrl("/authenticate")	로그인 요청 처리 URL 지정
+defaultSuccessUrl("/home")	로그인 성공 후 이동할 페이지
+failureUrl("/login?error=true")	로그인 실패 시 이동할 페이지
+usernameParameter("email")	기본 username 대신 email 필드 사용
+passwordParameter("passcode")	기본 password 대신 passcode 필드 사용
+successHandler(handler)	로그인 성공 시 실행할 코드 지정
+failureHandler(handler)	로그인 실패 시 실행할 코드 지정
+
+
+httpBasic()
+HTTP Basic 인증을 활성화하는 메서드야.
+클라이언트가 Base64로 인코딩된 username:password를 HTTP 헤더에 포함하여 인증하는 방식
+
+authenticationEntryPoint()	인증 실패 시 커스텀 처리기 지정
+realmName()	인증 영역(Realm)을 설정 (브라우저에서 "로그인" 팝업을 표시하는 영역)
+disabled()	HTTP Basic 인증을 비활성화
+enabled()	HTTP Basic 인증을 활성화 (기본값)
+
+
+Spring Security 필터 체인 실행 순서
+Spring Security 필터는 체인 형태로 실행되며, 실행 순서는 아래와 같아!
+📌 (실제로 필요한 필터만 동작함, 모든 필터가 항상 실행되는 건 아님)
+
+WebAsyncManagerIntegrationFilter
+SecurityContextPersistenceFilter
+HeaderWriterFilter
+CorsFilter
+CsrfFilter
+LogoutFilter
+UsernamePasswordAuthenticationFilter (폼 로그인)
+BearerTokenAuthenticationFilter (JWT 인증)
+OAuth2LoginAuthenticationFilter
+RequestCacheAwareFilter
+SecurityContextHolderAwareRequestFilter
+AnonymousAuthenticationFilter
+SessionManagementFilter
+ExceptionTranslationFilter
+FilterSecurityInterceptor (최종 권한 검사)
