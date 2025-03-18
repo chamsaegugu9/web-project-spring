@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-class DemoJwtAuthenticationFilter extends BasicAuthenticationFilter {
+public class DemoJwtAuthenticationFilter extends BasicAuthenticationFilter {
 
     // @Autowired
     // AuthenticationManager authenticationManager;
@@ -35,21 +35,24 @@ class DemoJwtAuthenticationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
+        System.out.println("JwtAuthenticationFilter");
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         Cookie[] cookies = httpRequest.getCookies();
+        try {
+            Cookie cookie = CookieUtils.getByNameCookie("DemoCookie", cookies);
+            String id = JwtUtils.getId(cookie.getValue());
+            if (id != null) {
+                DemoEntity demoEntity = demoService.findByName(id);
 
-        Cookie cookie = CookieUtils.getByNameCookie("DemoCookie", cookies);
-        String id = JwtUtils.getId(cookie.getValue());
-        if (id != null) {
-            DemoEntity demoEntity = demoService.findByName(id);
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                        demoEntity.getId(), demoEntity.getPassword());
 
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                    demoEntity.getId(), demoEntity.getPassword());
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 
-            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
-            filterChain.doFilter(request, response);
+                filterChain.doFilter(request, response);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 }

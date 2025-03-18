@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -38,13 +39,17 @@ public class DemoEntity {
     private String email;
 
     @Column(nullable = false)
-    @Size(min = 12, max = 15)
+    // @Size(min = 12, max = 15)
     private String password;
 
     @PrePersist
-    public void prePersist(){
-        if(userCode==null){
+    public void prePersist() {
+        if (userCode == null) {
             userCode = UUID.randomUUID().toString();
         }
+    }
+
+    public String toString() {
+        return Arrays.deepToString(new Object[] { userCode, id, name, email, password });
     }
 }
