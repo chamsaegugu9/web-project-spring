@@ -17,9 +17,9 @@ public class DemoUserDetailService implements UserDetailsService {
     DemoServiceImpl demoService;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        DemoEntity demoEntity = demoService.findByName(username);
+    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+        DemoEntity demoEntity = demoService.findById(id);
 
-        return User.builder().username(demoEntity.getName()).password(demoEntity.getPassword()).build();
+        return User.builder().username(demoEntity.getId()).password(demoEntity.getPassword()).build();
     }
 }

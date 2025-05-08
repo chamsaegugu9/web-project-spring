@@ -27,7 +27,7 @@ public class DemoEntity {
     private String userCode;
 
     @Column(nullable = false, unique = true, length = 15)
-    @Size(min = 10, max = 15)
+    @Size(min = 5, max = 15)
     private String id;
 
     @Column(nullable = false, length = 20)

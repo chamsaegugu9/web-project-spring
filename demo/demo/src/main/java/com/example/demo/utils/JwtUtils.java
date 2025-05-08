@@ -48,7 +48,9 @@ public class JwtUtils {
 
     // **토큰에서 사용자 이름 추출**
     public static String getId(String token) {
-        return parseToken(token).getPayload().getSubject();
+        String id = parseToken(token).getPayload().getSubject();
+        System.out.println(id);
+        return id;
     }
 
     // **토큰 만료 여부 확인**

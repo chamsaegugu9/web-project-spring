@@ -7,7 +7,9 @@ public class CookieUtils {
         Cookie cookie = new Cookie("DemoCookie", token);
         cookie.setHttpOnly(true); // HttpOnly 속성 설정
         cookie.setPath("/"); // 쿠키의 경로 설정
-        cookie.setMaxAge(3600); // 만료 시간을 0으로 설정하여 삭제
+        cookie.setSecure(false);
+        cookie.setAttribute("SameSite", "strict");
+        cookie.setMaxAge(3600);
 
         return cookie;
     }
