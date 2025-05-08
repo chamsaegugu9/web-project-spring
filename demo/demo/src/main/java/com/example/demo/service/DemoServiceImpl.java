@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +22,6 @@ public class DemoServiceImpl implements DemoService {
                 .name("World")
                 .email("Hello@World.com")
                 .password(encoderPWD.encode("HelloWorld"))
-                // .password("HelloWorld")
                 .build();
         demoRepository.save(demoEntity);
     }

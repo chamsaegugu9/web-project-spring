@@ -1,21 +1,15 @@
 package com.example.demo.filter;
 
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.demo.entity.DemoEntity;
 import com.example.demo.service.DemoServiceImpl;
 import com.example.demo.utils.CookieUtils;
 import com.example.demo.utils.JwtUtils;
 
-import io.jsonwebtoken.lang.Arrays;
-
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
@@ -27,7 +21,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-// @Component
 public class DemoJwtAuthenticationFilter extends BasicAuthenticationFilter {
 
     private DemoServiceImpl demoService;

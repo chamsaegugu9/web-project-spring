@@ -2,19 +2,19 @@ package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.DemoLoginRequestDTO;
 import com.example.demo.entity.DemoEntity;
 import com.example.demo.service.DemoServiceImpl;
-import com.example.demo.utils.CookieUtils;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
 @RequestMapping("/demo")
@@ -23,7 +23,8 @@ public class DemoController {
     @Autowired
     DemoServiceImpl demoService;
 
-    @RequestMapping({ "/", "" })
+    @Operation(summary = "demo", description = "hello demo")
+    @RequestMapping({""})
     public DemoEntity rootPath(HttpServletRequest request, HttpServletResponse response) {
         DemoEntity demoEntity = demoService.findById("helloworld");
 
@@ -61,8 +62,16 @@ public class DemoController {
         return cookie == null ? null : cookie.getName() + "=" + cookie.getValue();
     }
 
+    @PostMapping("/what")
+    public String whatPath(@RequestBody DemoLoginRequestDTO demoLoginRequestDTO) {
+        
+        System.out.println("what");
+        return new String("login");
+    }
+
     @PostMapping("/login")
-    public String loginPath() {
+    public String loginPath(@io.swagger.v3.oas.annotations.parameters.RequestBody @Parameter(description = "로그인 요청 정보", required = true) DemoLoginRequestDTO demoLoginRequestDTO) {
+        
         System.out.println("login");
         return new String("login");
     }
@@ -78,13 +87,4 @@ public class DemoController {
         System.out.println("join");
         return new String("join");
     }
-
-    // @PostMapping("/auth")
-    // public String postMethodName() {
-
-    // System.out.println("wnpswkd");
-
-    // return new String("이런 젠장");
-    // }
-
 }
